@@ -66,6 +66,12 @@ curl -X PUT "localhost:9200/mytest?pretty"
   "index" : "mytest"
 }
 ```
+
+delete
+```
+curl -X DELETE "localhost:9200/twitter?pretty"
+
+```
 #### mapping
 ```
 curl -v -XPUT "http://localhost:9200/some_index?pretty" -H 'Content-Type: application/json' -d ' 
@@ -87,6 +93,12 @@ curl -v -XPUT "http://localhost:9200/some_index?pretty" -H 'Content-Type: applic
 #### delete index
 ```
 curl -X DELETE "http://localhost:9200/some_index?pretty"
+```
+
+#### index stats
+```
+curl -X GET "localhost:9200/some_index/_stats?pretty"
+
 ```
 
 #### delete index document

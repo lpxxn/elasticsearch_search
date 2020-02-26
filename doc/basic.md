@@ -34,7 +34,12 @@ PUT /megacorp/employee/1
 |megacorp|	索引名|    
 |employee|	类型名|    
 |1       |	这个员工的ID|
+### ports
+9200作为Http协议，主要用于外部通讯a
+9300作为Tcp协议，jar之间就是通过tcp协议通讯
+ES集群之间是通过9300进行通讯
 
 ## books
 https://wiki.jikexueyuan.com/project/elasticsearch-definitive-guide-cn/010_Intro/25_Tutorial_Indexing.html
-  
+https://learnku.com/docs/elasticsearch73/7.3/data-in-documents-and-indices/6446
+https://es.xiaoleilu.com/index.html  

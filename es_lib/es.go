@@ -1,10 +1,12 @@
 package es_lib
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	elasticsearch7 "github.com/elastic/go-elasticsearch/v7"
 	es7api "github.com/elastic/go-elasticsearch/v7/esapi"
@@ -13,6 +15,8 @@ import (
 type es7Client struct {
 	*elasticsearch7.Client
 }
+
+const esReqTimeout = time.Second * 5
 
 var Es7Client *es7Client
 var es7connOnce sync.Once
@@ -68,7 +72,20 @@ func (e *es7Client) SearchInfo() (*es7api.Response, error) {
 	return nil, nil
 }
 
-func (e *es7Client) CreateIndexDocument(index, body string) error {
-	//req := e.Index()
+func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType, documentID string, body []byte) error {
+	req := es7api.IndexRequest{
+		Index:        index,
+		DocumentType: documentType,
+		DocumentID:   documentID,
+		Body:         bytes.NewReader(body),
+		Timeout:      esReqTimeout,
+	}
+	resp, err := req.Do(ctx, e)
+	if err != nil {
+		return err
+	}
+	if resp.IsError() {
+		return errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
+	}
 	return nil
 }
