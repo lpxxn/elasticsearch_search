@@ -10,6 +10,8 @@ import (
 
 	"github.com/elastic/go-elasticsearch/v7"
 	es7api "github.com/elastic/go-elasticsearch/v7/esapi"
+	es7util "github.com/elastic/go-elasticsearch/v7/esutil"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -59,6 +61,18 @@ func TestIndex(t *testing.T) {
 	body.PID = "qz8ie0f5-b9b0-9h0a-ad56-5i3eab47zcxa"
 	crateDoc("d")
 
+	body.Name = "dahuang"
+	body.Age = 1
+	body.Remark = "这个狗的名字叫大黄"
+	body.PID = "qz8ie0f5-b9k0-9h0a-ad06-5i3eab4izcxa"
+	crateDoc("e")
+
+	body.Name = "xiaobai"
+	body.Age = 5
+	body.Remark = "这个狗的名字叫小白"
+	body.PID = "qz8ie0f5-b0kz-ah0a-0906-5i3eab4izcxa"
+	crateDoc("f")
+
 
 	// 所有的数据
 	// curl "localhost:9200/my_test_3/_search?pretty"
@@ -67,6 +81,35 @@ func TestIndex(t *testing.T) {
 
 	// user id 为 a 的数据
 	// curl "localhost:9200/my_test_3/users/a?pretty"
+	// 所有 age = 1的
+	//curl -X GET "localhost:9200/my_test_3/_search?q=age:1&pretty"
+
+	/*
+	curl -X GET "localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d'
+	{
+	    "query" : {
+	        "term" : { "age" : 5 }
+	    }
+	}
+	'
+
+	*/
+
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"match": map[string]interface{}{
+				"age": 1,
+			},
+		},
+	}
+	resp, err := es7.Search(
+		es7.Search.WithIndex("my_test_3"),
+		//es7.Search.WithDocumentType("users"),
+		es7.Search.WithBody(es7util.NewJSONReader(query)),
+		es7.Search.WithPretty(),
+		)
+	assert.Nil(t, err)
+	t.Log(resp)
 }
 
 func TestIndex2(t *testing.T) {

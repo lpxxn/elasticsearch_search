@@ -68,7 +68,7 @@ func (e *es7Client) Info() (*es7api.Response, error) {
 }
 
 func (e *es7Client) SearchInfo() (*es7api.Response, error) {
-
+	//e.Client.Search
 	return nil, nil
 }
 
@@ -88,4 +88,8 @@ func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType
 		return errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
 	}
 	return nil
+}
+
+func (e *es7Client) MGet(ctx context.Context) {
+	//e.Client.Mget()
 }
