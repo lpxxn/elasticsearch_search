@@ -8,14 +8,12 @@ import (
 	"os"
 	"testing"
 
-	"github.com/elastic/go-elasticsearch/v7"
 	es7api "github.com/elastic/go-elasticsearch/v7/esapi"
-	es7util "github.com/elastic/go-elasticsearch/v7/esutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-var es7 *elasticsearch.Client
+var es7 Es7ClientType
 var myTest2Index = "mytest2"
 func TestIndex(t *testing.T) {
 	body := struct {
@@ -57,21 +55,27 @@ func TestIndex(t *testing.T) {
 
 	body.Name = "huahua"
 	body.Age = 5
-	body.Remark = "这个狗的名字叫花花"
+	body.Remark = "这个狗一的名字叫花花"
 	body.PID = "qz8ie0f5-b9b0-9h0a-ad56-5i3eab47zcxa"
 	crateDoc("d")
 
 	body.Name = "dahuang"
 	body.Age = 1
-	body.Remark = "这个狗的名字叫大黄"
+	body.Remark = "这个狗的一名字叫大黄"
 	body.PID = "qz8ie0f5-b9k0-9h0a-ad06-5i3eab4izcxa"
 	crateDoc("e")
 
 	body.Name = "xiaobai"
 	body.Age = 5
-	body.Remark = "这个狗的名字叫小白"
+	body.Remark = "这个狗一的名字叫小白"
 	body.PID = "qz8ie0f5-b0kz-ah0a-0906-5i3eab4izcxa"
 	crateDoc("f")
+
+	body.Name = "dingdang"
+	body.Age = 15
+	body.Remark = "这个狗一的名字叫叮当"
+	body.PID = "qz8ie0f5-b0kz-ah0a-p9h6-5i3eab4izcxa"
+	crateDoc("g")
 
 
 	// 所有的数据
@@ -98,16 +102,18 @@ func TestIndex(t *testing.T) {
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
 			"match": map[string]interface{}{
-				"age": 1,
+				"age": 5,
 			},
 		},
 	}
-	resp, err := es7.Search(
-		es7.Search.WithIndex("my_test_3"),
-		//es7.Search.WithDocumentType("users"),
-		es7.Search.WithBody(es7util.NewJSONReader(query)),
-		es7.Search.WithPretty(),
-		)
+	//resp, err := es7.Search(
+	//	es7.Search.WithIndex("my_test_3"),
+	//	//es7.Search.WithDocumentType("users"),
+	//	es7.Search.WithBody(es7util.NewJSONReader(query)),
+	//	es7.Search.WithPretty(),
+	//	es7.Search.WithSize(1),
+	//	)
+	resp, err := es7.SearchInfo(context.Background(), "my_test_3", "users", query)
 	assert.Nil(t, err)
 	t.Log(resp)
 }

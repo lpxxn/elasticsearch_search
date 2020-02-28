@@ -10,20 +10,23 @@ import (
 
 	elasticsearch7 "github.com/elastic/go-elasticsearch/v7"
 	es7api "github.com/elastic/go-elasticsearch/v7/esapi"
+	es7util "github.com/elastic/go-elasticsearch/v7/esutil"
 )
 
 type es7Client struct {
 	*elasticsearch7.Client
 }
 
+type Es7ClientType=*es7Client
+
 const esReqTimeout = time.Second * 5
 
-var Es7Client *es7Client
+var Es7Client Es7ClientType
 var es7connOnce sync.Once
 
-func NewEsClient() *elasticsearch7.Client {
+func NewEsClient() *es7Client {
 	if Es7Client != nil {
-		return Es7Client.Client
+		return Es7Client
 	}
 	es7connOnce.Do(func() {
 		// elasticsearch7.NewDefaultClient()
@@ -47,7 +50,7 @@ func NewEsClient() *elasticsearch7.Client {
 		panic(err)
 	}
 	fmt.Println(info.String())
-	return Es7Client.Client
+	return Es7Client
 }
 
 func (e *es7Client) Info() (*es7api.Response, error) {
@@ -67,9 +70,13 @@ func (e *es7Client) Info() (*es7api.Response, error) {
 	return resp, nil
 }
 
-func (e *es7Client) SearchInfo() (*es7api.Response, error) {
-	//e.Client.Search
-	return nil, nil
+func (e *es7Client) SearchInfo(ctx context.Context, index, docType string,  query map[string]interface{}, o ...func(*es7api.SearchRequest)) (*es7api.Response, error) {
+	opt := append(o, e.Search.WithIndex(index), e.Search.WithDocumentType(docType),
+		e.Search.WithContext(ctx),
+		e.Search.WithBody(es7util.NewJSONReader(query)),
+		e.Search.WithSize(200), e.Search.WithPretty())
+	resp, err := e.Search(opt...)
+	return resp, err
 }
 
 func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType, documentID string, body []byte) error {

@@ -90,10 +90,6 @@ curl -v -XPUT "http://localhost:9200/some_index?pretty" -H 'Content-Type: applic
 }
 '
 ```
-#### delete index
-```
-curl -X DELETE "http://localhost:9200/some_index?pretty"
-```
 
 #### index stats
 ```
@@ -101,20 +97,7 @@ curl -X GET "localhost:9200/some_index/_stats?pretty"
 
 ```
 
-#### delete index document
-DELETE /index/doc/id
-```
-curl -XDELETE "http://localhost:9200/mytest2/_doc/iQSmdXABXv3MPkS7Cg-Z?pretty"
 
-curl -XPOST "http://localhost:9200/my_test_3/_delete_by_query?conflicts=proceed&pretty" -H 'Content-Type: application/json' -d '
-{
-  "query": {
-    "match_all": {}
-  }
-}
-'
-
-```
 
 ### add a new document
 
@@ -205,9 +188,52 @@ curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: applicat
 
 curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
 {
-  "query": { "match": {"remark": "一 三"} }
+  "query": { "match": {"remark": "一三"} }
 }
 '
+
+curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {"remark" : "一三"}},
+                {"match": {"age" : 1}}
+            ]
+        }
+    }
+}
+'
+curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
+{
+    "query": {
+        "bool": {
+            "should": [
+                {"match": {"remark" : "一三"}},
+                {"match": {"age" : 1}},
+                {"match": {"age" : 5}}
+            ]
+        }
+    }
+}
+'
+// 只要 remark有三的和 age 是1或者5的 should == or must 必须
+curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {"remark" : "三"}}
+            ],
+            "should": [
+                {"match": {"age" : 1}},
+                {"match": {"age" : 5}}
+            ]
+        }
+    }
+}
+'
+
 
 {
   "query": { "match": {"remark": "测"} }
@@ -234,7 +260,9 @@ curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: applicat
 
 ```
 #### term
-
+term是代表完全匹配，也就是精确查询，搜索前不会再对搜索词进行分词，所以我们的搜索词必须是文档分词集合中的一个。
+term用于精确查询，match用于全文检索。
+比如： 一二  用match 会查询出包含 一或者二的数据， 用term，会看成一个词组 一二，不分词
 ```
 curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
 {
