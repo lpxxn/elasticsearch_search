@@ -3,7 +3,34 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.ht
 ```
 curl -XPUT "http://localhost:9200/tmapping1"
 ```
+or 
+```
+curl -X PUT "localhost:9200/tmapping1?pretty" -H 'Content-Type: application/json' -d'
+{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+            "field1" : { "type" : "text" }
+        }
+    }
+}
+'
 
+```
+分片数number_of_shards和副本数number_of_replicas
+
+Changes an index setting in real time.
+```
+curl -X PUT "localhost:9200/tmapping1/_settings?pretty" -H 'Content-Type: application/json' -d'
+{
+    "index" : {
+        "number_of_replicas" : 2
+    }
+}
+'
+```
 Adds new fields to an existing index or changes the search settings of existing fields.
 
 ```
