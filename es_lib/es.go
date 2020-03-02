@@ -91,12 +91,33 @@ func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType
 	if err != nil {
 		return nil, err
 	}
-	if resp.IsError() {
-		return resp, errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
+	if err = errByResponse(resp); err != nil {
+		return resp, err
 	}
 	return resp, nil
 }
 
 func (e *es7Client) MGet(ctx context.Context) {
 	//e.Client.Mget()
+}
+
+func (e *es7Client) DeleteByQueryInfo(ctx context.Context, index string, query map[string]interface{}, o ...func(*es7api.DeleteByQueryRequest)) error {
+	opt := append(o,
+		e.DeleteByQuery.WithContext(ctx),
+	)
+	resp, err := e.DeleteByQuery([]string{index}, es7util.NewJSONReader(query), opt...)
+	if err != nil {
+		return err
+	}
+	if err = errByResponse(resp); err != nil {
+		return err
+	}
+	return nil
+}
+
+func errByResponse(resp *es7api.Response) error {
+	if resp.IsError() {
+		return errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
+	}
+	return nil
 }

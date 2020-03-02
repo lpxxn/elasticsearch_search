@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -113,7 +114,7 @@ func TestIndex(t *testing.T) {
 			"bool": map[string]interface{}{
 				"filter": map[string]interface{}{
 					"match": map[string]interface{}{
-						"age": 1,
+						"age": 5,
 					},
 				},
 			},
@@ -126,9 +127,26 @@ func TestIndex(t *testing.T) {
 	//	es7.Search.WithPretty(),
 	//	es7.Search.WithSize(1),
 	//	)
+	time.Sleep(time.Second)
 	resp, err := es7.SearchInfo(context.Background(), "my_test_3", "users", query)
 	assert.Nil(t, err)
 	t.Log(resp)
+
+	deleteQuery := map[string]interface{}{
+		"query": map[string]interface{}{
+			"match": map[string]interface{}{
+				"age": 5,
+			},
+		},
+	}
+	err = es7.DeleteByQueryInfo(context.Background(), "my_test_3", deleteQuery, es7.DeleteByQuery.WithConflicts("proceed"))
+	assert.Nil(t, err)
+
+	time.Sleep(time.Second)
+	resp, err = es7.SearchInfo(context.Background(), "my_test_3", "users", query)
+	assert.Nil(t, err)
+	t.Log(resp)
+
 }
 
 func TestIndex2(t *testing.T) {
