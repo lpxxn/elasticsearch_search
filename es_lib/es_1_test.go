@@ -8,18 +8,18 @@ import (
 	"os"
 	"testing"
 
-	es7api "github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 var es7 Es7ClientType
 var myTest2Index = "mytest2"
+
 func TestIndex(t *testing.T) {
 	body := struct {
-		PID string `json:"pid"`
-		Name string `json:"name"`
-		Age  int32  `json:"age"`
+		PID    string `json:"pid"`
+		Name   string `json:"name"`
+		Age    int32  `json:"age"`
 		Remark string `json:"remark"`
 	}{}
 	body.Name = "wang_cai"
@@ -28,14 +28,16 @@ func TestIndex(t *testing.T) {
 	body.PID = "7ec0e0e5-a4b0-46d7-af56-5b3eab477aea"
 	crateDoc := func(id string) {
 		jsonBytes, _ := json.Marshal(body)
-		idxReq := es7api.IndexRequest{
-			Index:               "my_test_3",
-			DocumentType:        "users",
-			// 因为id 是固定的，所以每次会覆盖
-			DocumentID:          id,
-			Body:                bytes.NewReader(jsonBytes),
-		}
-		resp, err := idxReq.Do(context.Background(), es7)
+		//idxReq := es7api.IndexRequest{
+		//	Index:        "my_test_3",
+		//	DocumentType: "users",
+		//	// 因为id 是固定的，所以每次会覆盖
+		//	DocumentID: id,
+		//	Body:       bytes.NewReader(jsonBytes),
+		//}
+		//resp, err := idxReq.Do(context.Background(), es7.Client)
+		//require.Nil(t, err)
+		resp, err := es7.CreateIndexDocument(context.Background(), "my_test_3", "users", id, jsonBytes)
 		require.Nil(t, err)
 		t.Log(resp.String())
 	}
@@ -77,7 +79,6 @@ func TestIndex(t *testing.T) {
 	body.PID = "qz8ie0f5-b0kz-ah0a-p9h6-5i3eab4izcxa"
 	crateDoc("g")
 
-
 	// 所有的数据
 	// curl "localhost:9200/my_test_3/_search?pretty"
 	// 所有 users的数据
@@ -89,20 +90,32 @@ func TestIndex(t *testing.T) {
 	//curl -X GET "localhost:9200/my_test_3/_search?q=age:1&pretty"
 
 	/*
-	curl -X GET "localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d'
-	{
-	    "query" : {
-	        "term" : { "age" : 5 }
-	    }
-	}
-	'
+		curl -X GET "localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d'
+		{
+		    "query" : {
+		        "term" : { "age" : 5 }
+		    }
+		}
+		'
 
 	*/
 
+	//query := map[string]interface{}{
+	//	"query": map[string]interface{}{
+	//		"match": map[string]interface{}{
+	//			"age": 5,
+	//		},
+	//	},
+	//}
+
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
-			"match": map[string]interface{}{
-				"age": 5,
+			"bool": map[string]interface{}{
+				"filter": map[string]interface{}{
+					"match": map[string]interface{}{
+						"age": 1,
+					},
+				},
 			},
 		},
 	}
@@ -134,25 +147,25 @@ func TestIndex2(t *testing.T) {
 	fmt.Println(resp.String())
 
 	/*
-		"hits" : [
-		      {
-		        "_index" : "mytest2",
-		        "_type" : "_doc",
-		        "_id" : "hgSJdXABXv3MPkS7vw-X",
-		        "_score" : 1.0,
-		        "_source" : {
-		          "name" : "wang_cai",
-		          "age" : 2
-		        }
-		      }
-		    ]
-		  }
-	Elasticsearch 6: Rejecting mapping update as the final mapping would have more than 1 type
+			"hits" : [
+			      {
+			        "_index" : "mytest2",
+			        "_type" : "_doc",
+			        "_id" : "hgSJdXABXv3MPkS7vw-X",
+			        "_score" : 1.0,
+			        "_source" : {
+			          "name" : "wang_cai",
+			          "age" : 2
+			        }
+			      }
+			    ]
+			  }
+		Elasticsearch 6: Rejecting mapping update as the final mapping would have more than 1 type
 
-	Prior to elasticsearch v6, an index can have only 1 mapping by default.
-	In previous version 5.x, multiple mapping was possible for an index.
-	Though you may change this default setting by updating index setting
-	"index.mapping.single_type": false
+		Prior to elasticsearch v6, an index can have only 1 mapping by default.
+		In previous version 5.x, multiple mapping was possible for an index.
+		Though you may change this default setting by updating index setting
+		"index.mapping.single_type": false
 	*/
 }
 

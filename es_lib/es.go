@@ -17,7 +17,7 @@ type es7Client struct {
 	*elasticsearch7.Client
 }
 
-type Es7ClientType=*es7Client
+type Es7ClientType = *es7Client
 
 const esReqTimeout = time.Second * 5
 
@@ -70,7 +70,7 @@ func (e *es7Client) Info() (*es7api.Response, error) {
 	return resp, nil
 }
 
-func (e *es7Client) SearchInfo(ctx context.Context, index, docType string,  query map[string]interface{}, o ...func(*es7api.SearchRequest)) (*es7api.Response, error) {
+func (e *es7Client) SearchInfo(ctx context.Context, index, docType string, query map[string]interface{}, o ...func(*es7api.SearchRequest)) (*es7api.Response, error) {
 	opt := append(o, e.Search.WithIndex(index), e.Search.WithDocumentType(docType),
 		e.Search.WithContext(ctx),
 		e.Search.WithBody(es7util.NewJSONReader(query)),
@@ -79,7 +79,7 @@ func (e *es7Client) SearchInfo(ctx context.Context, index, docType string,  quer
 	return resp, err
 }
 
-func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType, documentID string, body []byte) error {
+func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType, documentID string, body []byte) (*es7api.Response, error) {
 	req := es7api.IndexRequest{
 		Index:        index,
 		DocumentType: documentType,
@@ -89,12 +89,12 @@ func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType
 	}
 	resp, err := req.Do(ctx, e)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if resp.IsError() {
-		return errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
+		return resp, errors.New(fmt.Sprintf("statusCode %s, error: %s", resp.Status(), resp.String()))
 	}
-	return nil
+	return resp, nil
 }
 
 func (e *es7Client) MGet(ctx context.Context) {
