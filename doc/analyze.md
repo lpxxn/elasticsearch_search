@@ -42,6 +42,7 @@ curl -XPUT "http://localhost:9200/my_test_3/?pretty" -H 'Content-Type: applicati
 }
 }
 '
+```
 如果已经存在会返回错误
 resource_already_exists_exception
 
