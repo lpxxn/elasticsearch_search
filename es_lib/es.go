@@ -80,6 +80,10 @@ func (e *es7Client) SearchInfo(ctx context.Context, index, docType string, query
 	return resp, err
 }
 
+func (e *es7Client) Batch(ctx context.Context) {
+	//e.Bulk()
+}
+
 func (e *es7Client) CreateIndexDocument(ctx context.Context, index, documentType, documentID string, body []byte) (*es7api.Response, error) {
 	req := es7api.IndexRequest{
 		Index:        index,

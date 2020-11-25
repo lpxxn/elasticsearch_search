@@ -173,6 +173,12 @@ func TestIndex2(t *testing.T) {
 	}
 	fmt.Println(resp.String())
 
+	resp, err = es7.Index("mytest2", bytes.NewReader(jsonBytes))
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resp.String())
+
 	/*
 			"hits" : [
 			      {
@@ -193,6 +199,24 @@ func TestIndex2(t *testing.T) {
 		In previous version 5.x, multiple mapping was possible for an index.
 		Though you may change this default setting by updating index setting
 		"index.mapping.single_type": false
+	*/
+	/*
+	curl -X GET "localhost:9200/mytest2/_search?_source=false&pretty"
+	用 curl -X GET "localhost:9200/mytest2/_search?pretty" 得到所有数据，用— _id
+	curl -X GET "localhost:9200/mytest2/_doc/VeVz_nUBqYxFvRaV80GB?&pretty"
+	{
+	  "_index" : "mytest2",
+	  "_type" : "_doc",
+	  "_id" : "VeVz_nUBqYxFvRaV80GB",
+	  "_version" : 1,
+	  "_seq_no" : 1,
+	  "_primary_term" : 1,
+	  "found" : true,
+	  "_source" : {
+	    "name" : "wang_cai",
+	    "age" : 2
+	  }
+	}
 	*/
 }
 
