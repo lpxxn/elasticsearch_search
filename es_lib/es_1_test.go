@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"testing"
 	"time"
@@ -15,6 +16,14 @@ import (
 
 var es7 Es7ClientType
 var myTest2Index = "mytest2"
+
+func TestInfo(t *testing.T) {
+	resp, err := Es7Client.Info()
+	assert.Nil(t, err)
+	body, err := ioutil.ReadAll(resp.Body)
+	assert.Nil(t, err)
+	t.Log(string(body))
+}
 
 func TestIndex(t *testing.T) {
 	body := struct {

@@ -46,6 +46,7 @@ func NewEsClient() *es7Client {
 		Es7Client = &es7Client{Client: es7}
 	})
 	info, err := Es7Client.Info()
+	defer info.Body.Close()
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +64,7 @@ func (e *es7Client) Info() (*es7api.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	//defer resp.Body.Close()
 	if resp.IsError() {
 		return nil, errors.New(resp.String())
 	}
