@@ -21,3 +21,16 @@ docker network create somenetwork
 docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:tag
 ```
 
+## demo
+```
+docker run --name myes -d -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+```
+
+default user
+```
+user: elastic
+password: changeme
+
+so 
+curl -u elastic:changeme localhost:9200
+```
