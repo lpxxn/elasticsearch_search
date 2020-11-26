@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -201,23 +202,57 @@ func TestIndex2(t *testing.T) {
 		"index.mapping.single_type": false
 	*/
 	/*
-	curl -X GET "localhost:9200/mytest2/_search?_source=false&pretty"
-	用 curl -X GET "localhost:9200/mytest2/_search?pretty" 得到所有数据，用— _id
-	curl -X GET "localhost:9200/mytest2/_doc/VeVz_nUBqYxFvRaV80GB?&pretty"
-	{
-	  "_index" : "mytest2",
-	  "_type" : "_doc",
-	  "_id" : "VeVz_nUBqYxFvRaV80GB",
-	  "_version" : 1,
-	  "_seq_no" : 1,
-	  "_primary_term" : 1,
-	  "found" : true,
-	  "_source" : {
-	    "name" : "wang_cai",
-	    "age" : 2
-	  }
-	}
+		curl -X GET "localhost:9200/mytest2/_search?_source=false&pretty"
+		用 curl -X GET "localhost:9200/mytest2/_search?pretty" 得到所有数据，用— _id
+		curl -X GET "localhost:9200/mytest2/_doc/VeVz_nUBqYxFvRaV80GB?&pretty"
+		{
+		  "_index" : "mytest2",
+		  "_type" : "_doc",
+		  "_id" : "VeVz_nUBqYxFvRaV80GB",
+		  "_version" : 1,
+		  "_seq_no" : 1,
+		  "_primary_term" : 1,
+		  "found" : true,
+		  "_source" : {
+		    "name" : "wang_cai",
+		    "age" : 2
+		  }
+		}
 	*/
+}
+
+// 在同一个id下多次创建，第一次返回的是 StatusCode 201 Created 再次index 返回200 OK
+// err 都是 nil  curl -X GET "localhost:9200/mytest2/_doc/11?pretty"
+func TestIndexDuplicated(t *testing.T) {
+	body := struct {
+		Name string `json:"name"`
+		Age  int32  `json:"age"`
+	}{}
+	body.Name = "laotie"
+	body.Age = 18
+	jsonBytes, _ := json.Marshal(body)
+	documentID := "112"
+	index := "mytest2"
+	req := esapi.IndexRequest{
+		Index:      index,
+		DocumentID: documentID,
+		Body:       bytes.NewReader(jsonBytes),
+	}
+	resp, err := req.Do(context.Background(), es7.Transport)
+	t.Log(resp.String())
+	t.Log(err)
+
+	body.Name = "laotie2"
+	body.Age = 18
+	jsonBytes, _ = json.Marshal(body)
+	req = esapi.IndexRequest{
+		Index:      index,
+		DocumentID: documentID,
+		Body:       bytes.NewReader(jsonBytes),
+	}
+	resp, err = req.Do(context.Background(), es7.Transport)
+	t.Log(resp.String())
+	t.Log(err)
 }
 
 func TestMain(m *testing.M) {
