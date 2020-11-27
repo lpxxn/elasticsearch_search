@@ -67,6 +67,7 @@ func TestDel1(t *testing.T) {
 	// , ES7ClientT.DeleteByQuery.WithConflicts("proceed")
 	assert.Nil(t, err)
 	if err != nil {
+		// 可能存在相当多的失败实体，这个过程如果想统计版本冲突的次数而不是返回原因，可以在在URL中设置conflicts=proceed或者在请求体中带上"conflicts": "proceed"
 		err = ES7ClientT.DeleteByQueryInfo(context.Background(), index, queryParam, ES7ClientT.DeleteByQuery.WithDocumentType(doc), ES7ClientT.DeleteByQuery.WithConflicts("proceed"))
 		assert.Nil(t, err)
 	}
