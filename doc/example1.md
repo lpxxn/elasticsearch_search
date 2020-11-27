@@ -129,7 +129,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
  }
 '
 
-## 这样，两个都会查出来
+## 这样，两个都会查出来，所以是 或查询
 curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "terms": { "tags": ["abc", "7ec0e0e5-a4b0-46d7-af56-5b3eab477ae"] }},
