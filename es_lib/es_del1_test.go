@@ -14,9 +14,11 @@ func TestDel1(t *testing.T) {
 	body := struct {
 		Name string `json:"name"`
 		Age  int32  `json:"age"`
+		Sort int32  `json:"sort"`
 	}{}
 	body.Name = "test zhang"
 	body.Age = 18
+	body.Sort = 123
 	jsonBytes, _ := json.Marshal(body)
 	documentID := "112"
 	index := "del_test1"
@@ -31,6 +33,7 @@ func TestDel1(t *testing.T) {
 
 	body.Name = "laotie 2 li"
 	body.Age = 18
+	body.Sort = 2
 	jsonBytes, _ = json.Marshal(body)
 	req = esapi.IndexRequest{
 		Index:      index,
@@ -43,6 +46,7 @@ func TestDel1(t *testing.T) {
 
 	body.Name = "laotie 3 wang"
 	body.Age = 188
+	body.Sort = 16
 	jsonBytes, _ = json.Marshal(body)
 	req = esapi.IndexRequest{
 		Index:      index,
@@ -53,21 +57,23 @@ func TestDel1(t *testing.T) {
 	t.Log(resp.String())
 	t.Log(err)
 
-	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc",
-		map[string]interface{}{"query": map[string]interface{}{"match": map[string]interface{}{"name": "laotie, zhang"}}}) // 只要有 laotie 或者 zhang 就会查出来
+	queryParam := map[string]interface{}{"query": map[string]interface{}{"term": map[string]interface{}{"age": 18}}}
+	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc", queryParam)
 	assert.Nil(t, err)
 	t.Log(resp.String())
 
-	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc",
-		map[string]interface{}{"query": map[string]interface{}{"match": map[string]interface{}{"name": "laotie zhang"}}}) // 只要有 laotie 或者 zhang 就会查出来和上面是一样的
+	doc := "_doc"
+	err = ES7ClientT.DeleteByQueryInfo(context.Background(), index, queryParam, ES7ClientT.DeleteByQuery.WithDocumentType(doc))
+	// , ES7ClientT.DeleteByQuery.WithConflicts("proceed")
+	assert.Nil(t, err)
+	if err != nil {
+		err = ES7ClientT.DeleteByQueryInfo(context.Background(), index, queryParam, ES7ClientT.DeleteByQuery.WithDocumentType(doc), ES7ClientT.DeleteByQuery.WithConflicts("proceed"))
+		assert.Nil(t, err)
+	}
+
+	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc", queryParam)
 	assert.Nil(t, err)
 	t.Log(resp.String())
-
-	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc",
-		map[string]interface{}{"query": map[string]interface{}{"term": map[string]interface{}{"name": "wang"}}}) // term是只要有 wang
-	assert.Nil(t, err)
-	t.Log(resp.String())
-
 }
 
 /*

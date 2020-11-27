@@ -109,6 +109,7 @@ func (e *es7Client) MGet(ctx context.Context) {
 func (e *es7Client) DeleteByQueryInfo(ctx context.Context, index string, query map[string]interface{}, o ...func(*es7api.DeleteByQueryRequest)) error {
 	opt := append(o,
 		e.DeleteByQuery.WithContext(ctx),
+		e.DeleteByQuery.WithHuman(),
 	)
 	resp, err := e.DeleteByQuery([]string{index}, es7util.NewJSONReader(query), opt...)
 	if err != nil {
