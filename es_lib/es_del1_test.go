@@ -72,6 +72,9 @@ func TestDel1(t *testing.T) {
 		assert.Nil(t, err)
 	}
 
+	// update 是有 retry
+	//ES7ClientT.Update.WithRetryOnConflict(10)
+
 	resp, err = ES7ClientT.SearchInfo(context.Background(), index, "_doc", queryParam)
 	assert.Nil(t, err)
 	t.Log(resp.String())
