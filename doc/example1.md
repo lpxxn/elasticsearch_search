@@ -43,6 +43,15 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
    ]
  }
 '
+// 因为keyword是不分词的，所以是找不到数据的。
+curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+ {
+   "query": { "match": {"name": "7ec0e0e5"} },
+   "sort": [
+     { "name2.a": "asc" }
+   ]
+ }
+'
 
 curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
