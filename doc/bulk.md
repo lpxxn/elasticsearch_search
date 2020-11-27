@@ -36,6 +36,13 @@ curl -X POST "localhost:9200/_bulk?pretty" -H 'Content-Type: application/json' -
 {"index":{"_index" : "test", "_id":4}}
 {"title":"zhao","age": 50}
 '
+## 直接多个document是错误的
+curl -X POST "localhost:9200/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{"index":{"_index" : "test"}}
+{"name":"zhang11","age": "55"}
+{"name":"wang11","age": "45"}
+'
+
 
 
 curl -X GET "localhost:9200/test/_search?pretty" 得到所有数据，用— _id
