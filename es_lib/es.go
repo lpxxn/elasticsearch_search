@@ -45,12 +45,12 @@ func NewEsClient() *es7Client {
 		}
 		Es7Client = &es7Client{Client: es7}
 	})
-	info, err := Es7Client.Info()
-	defer info.Body.Close()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(info.String())
+	//info, err := Es7Client.Info()
+	//defer info.Body.Close()
+	//if err != nil {
+	//	 panic(err)
+	//}
+	//fmt.Println(info.String())
 	return Es7Client
 }
 

@@ -62,13 +62,12 @@ curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: applicat
 If we want to speed up term query and get it cached then it should be wrapped up in a constant_score filter.
 curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
 {
-    "query" : {
-        "constant_score" : {
-            "match" : {
-                "age" : 1
-            }
-        }
-    }
+   "query": {
+	    "constant_score": {
+	        "filter" : {
+				"match": {"age": 18}
+		}
+   }
 }
 '
 ```

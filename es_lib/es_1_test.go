@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var es7 Es7ClientType
+var ES7ClientT Es7ClientType
 var myTest2Index = "mytest2"
 
 func TestInfo(t *testing.T) {
@@ -46,9 +46,9 @@ func TestIndex(t *testing.T) {
 		//	DocumentID: id,
 		//	Body:       bytes.NewReader(jsonBytes),
 		//}
-		//resp, err := idxReq.Do(context.Background(), es7.Client)
+		//resp, err := idxReq.Do(context.Background(), ES7ClientT.Client)
 		//require.Nil(t, err)
-		resp, err := es7.CreateIndexDocument(context.Background(), "my_test_3", "users", id, jsonBytes)
+		resp, err := ES7ClientT.CreateIndexDocument(context.Background(), "my_test_3", "users", id, jsonBytes)
 		require.Nil(t, err)
 		t.Log(resp.String())
 	}
@@ -130,15 +130,15 @@ func TestIndex(t *testing.T) {
 			},
 		},
 	}
-	//resp, err := es7.Search(
-	//	es7.Search.WithIndex("my_test_3"),
-	//	//es7.Search.WithDocumentType("users"),
-	//	es7.Search.WithBody(es7util.NewJSONReader(query)),
-	//	es7.Search.WithPretty(),
-	//	es7.Search.WithSize(1),
+	//resp, err := ES7ClientT.Search(
+	//	ES7ClientT.Search.WithIndex("my_test_3"),
+	//	//ES7ClientT.Search.WithDocumentType("users"),
+	//	ES7ClientT.Search.WithBody(es7util.NewJSONReader(query)),
+	//	ES7ClientT.Search.WithPretty(),
+	//	ES7ClientT.Search.WithSize(1),
 	//	)
 	time.Sleep(time.Second)
-	resp, err := es7.SearchInfo(context.Background(), "my_test_3", "users", query)
+	resp, err := ES7ClientT.SearchInfo(context.Background(), "my_test_3", "users", query)
 	assert.Nil(t, err)
 	t.Log(resp)
 
@@ -149,11 +149,11 @@ func TestIndex(t *testing.T) {
 			},
 		},
 	}
-	err = es7.DeleteByQueryInfo(context.Background(), "my_test_3", deleteQuery, es7.DeleteByQuery.WithConflicts("proceed"))
+	err = ES7ClientT.DeleteByQueryInfo(context.Background(), "my_test_3", deleteQuery, ES7ClientT.DeleteByQuery.WithConflicts("proceed"))
 	assert.Nil(t, err)
 
 	time.Sleep(time.Second)
-	resp, err = es7.SearchInfo(context.Background(), "my_test_3", "users", query)
+	resp, err = ES7ClientT.SearchInfo(context.Background(), "my_test_3", "users", query)
 	assert.Nil(t, err)
 	t.Log(resp)
 
@@ -168,13 +168,13 @@ func TestIndex2(t *testing.T) {
 	body.Age = 2
 	jsonBytes, _ := json.Marshal(body)
 	// 这样的话 type 是_doc
-	resp, err := es7.Index("mytest2", bytes.NewReader(jsonBytes))
+	resp, err := ES7ClientT.Index("mytest2", bytes.NewReader(jsonBytes))
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resp.String())
 
-	resp, err = es7.Index("mytest2", bytes.NewReader(jsonBytes))
+	resp, err = ES7ClientT.Index("mytest2", bytes.NewReader(jsonBytes))
 	if err != nil {
 		panic(err)
 	}
@@ -238,7 +238,7 @@ func TestIndexDuplicated(t *testing.T) {
 		DocumentID: documentID,
 		Body:       bytes.NewReader(jsonBytes),
 	}
-	resp, err := req.Do(context.Background(), es7.Transport)
+	resp, err := req.Do(context.Background(), ES7ClientT.Transport)
 	t.Log(resp.String())
 	t.Log(err)
 
@@ -250,13 +250,13 @@ func TestIndexDuplicated(t *testing.T) {
 		DocumentID: documentID,
 		Body:       bytes.NewReader(jsonBytes),
 	}
-	resp, err = req.Do(context.Background(), es7.Transport)
+	resp, err = req.Do(context.Background(), ES7ClientT.Transport)
 	t.Log(resp.String())
 	t.Log(err)
 }
 
 func TestMain(m *testing.M) {
-	es7 = NewEsClient()
+	ES7ClientT = NewEsClient()
 
 	os.Exit(m.Run())
 }
