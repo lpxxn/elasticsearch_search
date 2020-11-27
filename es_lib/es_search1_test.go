@@ -116,7 +116,7 @@ curl "localhost:9200/search_test1/_search?pretty" -H 'Content-Type: application/
 		}
 	},
    "sort": [
-        { "sort" : { "order": "asc", "unmapped_type" : "long"} }
+        { "sort" : { "order": "asc", "unmapped_type" : "integer"} }
    ]
  }
 '
