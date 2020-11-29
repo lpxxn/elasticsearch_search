@@ -128,5 +128,6 @@ type bulkResponse struct {
 }
 
 /*
-
+https://golangbyexample.com/go-iterator-design-pattern/
+https://www.tutorialspoint.com/design_pattern/iterator_pattern.htm
  */
