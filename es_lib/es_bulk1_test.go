@@ -64,7 +64,8 @@ func TestBulkIndex1(t *testing.T) {
 
 func doBulk(buf *bytes.Buffer, indexName string, documentType string) {
 	fmt.Printf("bytes: %s \n", buf.String())
-	res, err := ES7ClientT.Bulk(bytes.NewReader(buf.Bytes()), ES7ClientT.Bulk.WithIndex(indexName), ES7ClientT.Bulk.WithDocumentType(documentType))
+	res, err := ES7ClientT.Bulk(bytes.NewReader(buf.Bytes()), ES7ClientT.Bulk.WithIndex(indexName), ES7ClientT.Bulk.WithDocumentType(documentType),
+		ES7ClientT.Bulk.WithRefresh("wait_for"))
 	if err != nil {
 		log.Fatalf("Failure indexing batch  %#v", err)
 	}
