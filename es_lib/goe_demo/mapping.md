@@ -169,5 +169,22 @@ curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content
 }
 '
 
+curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "200km",
+          "hotel.location": [ -70, 40 ]
+        }
+      }
+    }
+  }
+}
+'
 
 ```
