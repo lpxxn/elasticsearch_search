@@ -5,21 +5,23 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"io/ioutil"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/elastic/go-elasticsearch/v7/esapi"
+	"github.com/lpxxn/elasticsearch_search/es_lib/entity"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-var ES7ClientT Es7ClientType
+var ES7ClientT entity.Es7ClientType
 var myTest2Index = "mytest2"
 
 func TestInfo(t *testing.T) {
-	resp, err := Es7Client.Info()
+	resp, err := entity.Es7Client.Info()
 	assert.Nil(t, err)
 	body, err := ioutil.ReadAll(resp.Body)
 	assert.Nil(t, err)
@@ -256,7 +258,7 @@ func TestIndexDuplicated(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	ES7ClientT = NewEsClient()
+	ES7ClientT = entity.NewEsClient()
 
 	os.Exit(m.Run())
 }

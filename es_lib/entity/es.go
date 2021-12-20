@@ -1,4 +1,4 @@
-package es_lib
+package entity
 
 import (
 	"bytes"

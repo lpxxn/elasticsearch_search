@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/lpxxn/elasticsearch_search/es_lib"
+	"github.com/lpxxn/elasticsearch_search/es_lib/entity"
 )
 
 func main() {
-	es7 := es_lib.NewEsClient()
-	resp, err := es_lib.Es7Client.Info()
+	es7 := entity.NewEsClient()
+	resp, err := entity.Es7Client.Info()
 	if err != nil {
 		panic(err)
 	}
