@@ -144,6 +144,35 @@ curl -X PUT "localhost:9200/my_geoshapes/_doc/1?pretty" -H 'Content-Type: applic
   }
 }
 '
+
+curl "localhost:9200/my_geoshapes/_search?pretty"
+
+curl -X GET "localhost:9200/my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "hotel.location": {
+            "top_left": {
+              "lat": 40.73,
+              "lon": -74.1
+            },
+            "bottom_right": {
+              "lat": 40.01,
+              "lon": -71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'
+
 ```
 
 To match both geo_point and geo_shape values, search both indices:
@@ -180,6 +209,32 @@ curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content
         "geo_distance": {
           "distance": "200km",
           "hotel.location": [ -70, 40 ]
+        }
+      }
+    }
+  }
+}
+'
+
+curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "hotel.location": {
+            "top_left": {
+                "lat": 40.73, 
+                "lon": -74.1
+            },
+            "bottom_right": {
+                "lat": 40.01, 
+                "lon": -71.12 
+            }
+          }
         }
       }
     }

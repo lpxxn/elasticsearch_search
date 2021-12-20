@@ -1,14 +1,18 @@
 
 ## docker
-https://www.elastic.co/guide/en/elasticsearch/reference/7.6/docker.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docker.html
 
 
 ```
 docker pull elasticsearch:7.6.0
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.11.2
 ```
 ### single node
 ```
 docker run --rm -v /Users/lipeng/temp/share/elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.6.0
+
+docker run --rm -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.11.2
+
 ```
 
 #### dev model
