@@ -117,3 +117,57 @@ curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: applic
 }
 '
 ```
+
+```
+curl -X PUT "localhost:9200/my_geoshapes?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "hotel": {
+        "properties": {
+          "location": {
+            "type": "geo_shape"
+          }
+        }
+      }
+    }
+  }
+}
+'
+curl -X PUT "localhost:9200/my_geoshapes/_doc/1?pretty" -H 'Content-Type: application/json' -d'
+{
+  "hotel": {
+    "location": {
+      "type" : "polygon",
+      "coordinates" : [[[13.0 ,51.5], [15.0, 51.5], [15.0, 54.0], [13.0, 54.0], [13.0 ,51.5]]]
+    }
+  }
+}
+'
+```
+
+To match both geo_point and geo_shape values, search both indices:
+```
+curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "200km",
+          "hotel.location": {
+            "lat": 40,
+            "lon": -70
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+
+```
