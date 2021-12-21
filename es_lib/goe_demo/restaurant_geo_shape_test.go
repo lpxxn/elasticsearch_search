@@ -106,6 +106,14 @@ func TestPolygonCircle1(t *testing.T) {
 				},
 			},
 		},
+		// 加上sort 都可以有距离
+		"sort": map[string]interface{}{
+			"_geo_distance": map[string]interface{}{
+				"hotel.location": []float64{116.49158, 39.97626},
+				"order":          "asc",
+				"unit":           "m",
+			},
+		},
 	}
 	// []float64{
 	//  北°, 东
