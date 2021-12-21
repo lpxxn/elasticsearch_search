@@ -1,5 +1,5 @@
 ```
-curl -X PUT "localhost:9200/mytest_geo1/_doc/1?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/1?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "美餐小食堂",
@@ -9,7 +9,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/1?pretty" -H 'Content-Type: applica
 '
 
 // 40 米
-curl -X PUT "localhost:9200/mytest_geo1/_doc/2?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/2?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "40米食堂A",
@@ -19,7 +19,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/2?pretty" -H 'Content-Type: applica
 '
 
 // 40 米2
-curl -X PUT "localhost:9200/mytest_geo1/_doc/3?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/3?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "40米食堂B",
@@ -29,7 +29,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/3?pretty" -H 'Content-Type: applica
 '
 
 // 50 米
-curl -X PUT "localhost:9200/mytest_geo1/_doc/4?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/4?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "50米食堂A",
@@ -39,7 +39,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/4?pretty" -H 'Content-Type: applica
 '
 
 // 100 米
-curl -X PUT "localhost:9200/mytest_geo1/_doc/5?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/5?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "100米食堂A",
@@ -49,7 +49,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/5?pretty" -H 'Content-Type: applica
 '
 
 // 外
-curl -X PUT "localhost:9200/mytest_geo1/_doc/6?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/6?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "大山子798A",
@@ -58,7 +58,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/6?pretty" -H 'Content-Type: applica
 }
 '
 
-curl -X PUT "localhost:9200/mytest_geo1/_doc/7?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/7?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "大山子798艺术区A",
@@ -73,7 +73,7 @@ box left  39.97665, 116.49036  right: 39.97584, 116.49211
 
 box
 ```
-curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -99,4 +99,31 @@ curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: applic
 }
 '
 ```
-在做开发时，合理的扩展是正常的，为了防止未来变更过度设计，我们，因为我们并不确定未来的需求变动。
+
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-shape.html
+Envelopeedit
+Elasticsearch supports an envelope type, which consists of coordinates for upper left and lower right points of the shape to represent a bounding rectangle in the format [[minLon, maxLat], [maxLon, minLat]]:
+```
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_shape": {
+          "hotel.location": {
+            "shape": {
+              "type": "envelope",
+              "coordinates": [ [ 116.49036,39.97665 ], [ 116.49211,39.97584 ] ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+```

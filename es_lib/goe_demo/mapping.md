@@ -2,7 +2,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-di
 https://www.elastic.co/guide/cn/elasticsearch/guide/current/lat-lon-formats.html
 
 ```
-curl -X PUT "localhost:9200/mytest_geo1?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1?pretty" -H 'Content-Type: application/json' -d'
 {
   "mappings": {
     "properties": {
@@ -19,7 +19,7 @@ curl -X PUT "localhost:9200/mytest_geo1?pretty" -H 'Content-Type: application/js
 }
 '
 
-curl -X PUT "localhost:9200/mytest_geo1/_doc/1?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/1?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "Chipotle Mexican Grill",
@@ -29,7 +29,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/1?pretty" -H 'Content-Type: applica
 '
 
 
-curl -X PUT "localhost:9200/mytest_geo1/_doc/2?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/2?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
     "name": "速8",
@@ -41,7 +41,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/2?pretty" -H 'Content-Type: applica
 }
 '
 
-curl -X PUT "localhost:9200/mytest_geo1/_doc/3?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/3?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "Pala Pizza",
@@ -53,7 +53,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/3?pretty" -H 'Content-Type: applica
 }
 '
 
-curl -X PUT "localhost:9200/mytest_geo1/_doc/4?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_doc/4?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
       "name":     "Mini Munchies Pizza",
@@ -67,7 +67,7 @@ curl -X PUT "localhost:9200/mytest_geo1/_doc/4?pretty" -H 'Content-Type: applica
 ## 通过地理坐标点过滤
 这是目前为止最有效的地理坐标过滤器了，因为它计算起来非常简单。 你指定一个矩形的 顶部 , 底部 , 左边界 ，和 右边界 ，然后过滤器只需判断坐标的经度是否在左右边界之间，纬度是否在上下边界之间：
 ```
-curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -96,7 +96,7 @@ curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: applic
 distance
 
 ```
-curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -119,7 +119,7 @@ curl -X GET "localhost:9200/mytest_geo1/_search?pretty" -H 'Content-Type: applic
 ```
 
 ```
-curl -X PUT "localhost:9200/my_geoshapes?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/my_geoshapes?pretty" -H 'Content-Type: application/json' -d'
 {
   "mappings": {
     "properties": {
@@ -134,7 +134,7 @@ curl -X PUT "localhost:9200/my_geoshapes?pretty" -H 'Content-Type: application/j
   }
 }
 '
-curl -X PUT "localhost:9200/my_geoshapes/_doc/1?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/my_geoshapes/_doc/1?pretty" -H 'Content-Type: application/json' -d'
 {
   "hotel": {
     "location": {
@@ -145,9 +145,9 @@ curl -X PUT "localhost:9200/my_geoshapes/_doc/1?pretty" -H 'Content-Type: applic
 }
 '
 
-curl "localhost:9200/my_geoshapes/_search?pretty"
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/my_geoshapes/_search?pretty"
 
-curl -X GET "localhost:9200/my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -177,7 +177,7 @@ curl -X GET "localhost:9200/my_geoshapes/_search?pretty" -H 'Content-Type: appli
 
 To match both geo_point and geo_shape values, search both indices:
 ```
-curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -198,7 +198,7 @@ curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content
 }
 '
 
-curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
@@ -216,7 +216,7 @@ curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content
 }
 '
 
-curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "bool": {
