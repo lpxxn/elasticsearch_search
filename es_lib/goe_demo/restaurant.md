@@ -102,7 +102,8 @@ curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es
 
 // https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-shape.html
 Envelopeedit
-Elasticsearch supports an envelope type, which consists of coordinates for upper left and lower right points of the shape to represent a bounding rectangle in the format [[minLon, maxLat], [maxLon, minLat]]:
+Elasticsearch supports an envelope type, which consists of coordinates for upper left and lower right points of 
+the shape to represent a bounding rectangle in the format [[minLon, maxLat], [maxLon, minLat]]:
 ```
 curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/mytest_geo1/_search?pretty" -H 'Content-Type: application/json' -d'
 {
@@ -127,3 +128,8 @@ curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es
 '
 
 ```
+东西经(longitude)，南北纬(latitude)
+Polygonedit
+A polygon is defined by a list of a list of points. 
+The first and last points in each (outer) list must be the same (the polygon must be closed). 
+The following is an example of a Polygon in GeoJSON.
