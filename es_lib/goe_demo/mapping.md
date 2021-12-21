@@ -243,3 +243,5 @@ curl -X GET "localhost:9200/mytest_geo1,my_geoshapes/_search?pretty" -H 'Content
 '
 
 ```
+不添加新功能的前提下，重构代码，调整原有的程序逻辑，以适应新功能实现的功能。
+再

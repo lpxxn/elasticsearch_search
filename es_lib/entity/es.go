@@ -32,11 +32,12 @@ func NewEsClient() *es7Client {
 		// elasticsearch7.NewDefaultClient()
 		cfg := elasticsearch7.Config{
 			Addresses: []string{
-				"http://localhost:9200",
+				"https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn",
+				//"http://localhost:9200",
 				//"http://localhost:9201",
 			},
-			Username: "elastic",
-			Password: "changeme",
+			//Username: "elastic",
+			//Password: "changeme",
 			// ...
 		}
 		es7, err := elasticsearch7.NewClient(cfg)
