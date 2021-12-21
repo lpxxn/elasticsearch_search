@@ -28,12 +28,20 @@ func TestInfo(t *testing.T) {
 	t.Log(string(body))
 }
 
+type Location struct {
+	Lat float64 `json:"lat"`
+	Lon float64 `json:"lon"`
+}
+
 func TestIndex(t *testing.T) {
 	body := struct {
-		PID    string `json:"pid"`
-		Name   string `json:"name"`
-		Age    int32  `json:"age"`
-		Remark string `json:"remark"`
+		PID       string   `json:"pid"`
+		Name      string   `json:"name"`
+		Age       int32    `json:"age"`
+		Remark    string   `json:"remark"`
+		City      string   `json:"city"`
+		Location  Location `json:"location"`
+		Location2 Location `json:"location2"`
 	}{}
 	body.Name = "wang_cai"
 	body.Age = 5
@@ -60,24 +68,61 @@ func TestIndex(t *testing.T) {
 	body.Age = 1
 	body.Remark = "李三张四测试"
 	body.PID = "a4i0e0e5-a4b0-46d7-af56-5b3eab477aea"
+	body.City = "beijing"
+	// 在mapping.md里 location我有加到mapping里 geo_point，而location2没有就默认是 long 类型json
+	body.Location = Location{
+		Lat: 39.97621,
+		Lon: 116.49176,
+	}
+	body.Location2 = Location{
+		Lat: 39.97621,
+		Lon: 116.49176,
+	}
 	crateDoc("b")
 
 	body.Name = "xiaohei"
 	body.Age = 3
 	body.Remark = "a b c"
 	body.PID = "9z80e0e5-b9b0-46d7-af56-5b3eab47icea"
+	body.City = "beijing1"
+	body.Location = Location{
+		Lat: 36.97621,
+		Lon: 106.49176,
+	}
+	body.Location2 = Location{
+		Lat: 31.97621,
+		Lon: 112.49176,
+	}
 	crateDoc("c")
 
 	body.Name = "huahua"
 	body.Age = 5
 	body.Remark = "这个狗一的名字叫花花"
 	body.PID = "qz8ie0f5-b9b0-9h0a-ad56-5i3eab47zcxa"
+	body.City = "beijing2"
+	body.Location = Location{
+		Lat: 39.97621,
+		Lon: 116.49176,
+	}
+	body.Location2 = Location{
+		Lat: 39.97621,
+		Lon: 116.49176,
+	}
 	crateDoc("d")
 
 	body.Name = "dahuang"
 	body.Age = 1
 	body.Remark = "这个狗的一名字叫大黄"
 	body.PID = "qz8ie0f5-b9k0-9h0a-ad06-5i3eab4izcxa"
+	body.City = "beijing3"
+	body.Location = Location{
+		Lat: 29.97621,
+		Lon: 116.49176,
+	}
+	body.Location2 = Location{
+		Lat: 29.97621,
+		Lon: 116.49176,
+	}
 	crateDoc("e")
 
 	body.Name = "xiaobai"
