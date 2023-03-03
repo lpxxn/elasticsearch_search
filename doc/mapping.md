@@ -53,6 +53,7 @@ curl -X GET "localhost:9200/tmapping1/_mapping?pretty"
 curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/my_test_3/_mapping?pretty"
 ```
 
+
 ## demo
 
 ### Use the create index API to create an index with the city text field.
@@ -75,7 +76,7 @@ curl -X PUT "localhost:9200/my_index?pretty" -H 'Content-Type: application/json'
 
 or if the index is exist 
 ```
-curl -XPUT "http://localhost:9200/my_index/_mapping/?pretty" -H 'Content-Type: application/json' -d '
+curl -X PUT "http://localhost:9200/my_index/_mapping/?pretty" -H 'Content-Type: application/json' -d '
 {
     "properties": {
         "city":{
