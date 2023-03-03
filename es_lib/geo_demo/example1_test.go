@@ -1,4 +1,4 @@
-package goe_demo
+package geo_demo
 
 import (
 	"context"
