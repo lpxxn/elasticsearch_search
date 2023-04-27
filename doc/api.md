@@ -170,6 +170,7 @@ curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: applicat
 
 ### match
 #### 只要 match 
+代表模糊匹配，搜索前会对搜索词进行分词解析，然后按搜索词匹配查找
 ```
 curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
  {
