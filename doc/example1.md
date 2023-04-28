@@ -1,5 +1,5 @@
 ```
-curl -X PUT "localhost:9200/testmap?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap?pretty" -H 'Content-Type: application/json' -d'
 {
   "aliases": {
     "testaliais": {}
@@ -7,7 +7,7 @@ curl -X PUT "localhost:9200/testmap?pretty" -H 'Content-Type: application/json' 
   "mappings": {
     "properties": {
       "id": {"type": "long"},
-      "name": { "type": "keyword" },
+      "name": { "type": "text", "analyzer": "ik_smart" },
       "remart": {"type": "text"},
       "age": {"type": "integer"},
       "sort": {"type": "integer"},
@@ -29,24 +29,24 @@ curl -X PUT "localhost:9200/testmap?pretty" -H 'Content-Type: application/json' 
 
 类型是keyword,就是不分词处理
 
-curl -X GET "localhost:9200/testmap/_mapping?pretty"
+curl -X GET "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_mapping?pretty"
 
-curl -X PUT "localhost:9200/testmap/_doc/1?pretty" \
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_doc/1?pretty" \
 -H 'Content-Type: application/json' -d \
-'{  "name": "7ec0e0e5-a4b0-46d7-af56-5b3eab477aea", 
+'{  "name": "湘潭市中心医院营养食堂（华银）", 
     "id": 1, 
-    "remark": "7ec0e0e5-a4b0-46d7-af56-5b3eab477aea", 
+    "remark": "美餐小食堂", 
     "age": 1, 
     "sort": 1, 
     "name2": {"first": "abc-def-aee", "a": 10},
     "tags": ["7ec0e0e5-a4b0-46d7-af56-5b3eab477aea", "aaaabc", "abc"]
 }'
 
-curl -X PUT "localhost:9200/testmap/_doc/2?pretty" \
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_doc/2?pretty" \
 -H 'Content-Type: application/json' -d \
-'{  "name": "7ec0e0e5-a4b0-46d7-af56-5b3eab477ae", 
+'{  "name": "THE RESTful（武汉顺丰丰泰店）", 
     "id": 1, 
-    "remark": "7ec0e0e5-a4b0-46d7-af56-5b3eab477ae", 
+    "remark": "面包天使新乡店", 
     "age": 1, 
     "sort": 1, 
     "name2": {"first": "abc-def-aee", "a": 23},
@@ -54,9 +54,9 @@ curl -X PUT "localhost:9200/testmap/_doc/2?pretty" \
 }'
 
 
-curl "localhost:9200/testmap/_search?pretty"
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty"
 
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "match": {"age": 1} },
    "sort": [
@@ -66,7 +66,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 '
 
 // 因为keyword是不分词的，所以是找不到数据的。
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "match": {"name": "7ec0e0e5"} },
    "sort": [
@@ -75,7 +75,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
  }
 '
 
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "match": {"remark": "7ec0e0e5"} },
    "sort": [
@@ -85,7 +85,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 '
 
 
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "term": {"remark.keyword": "7ec0e0e5-a4b0-46d7-af56-5b3eab477aea"} },
    "sort": [
@@ -97,10 +97,10 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 
 
 
-curl -X DELETE "localhost:9200/testmap?pretty"
+curl -X DELETE "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap?pretty"
 
 
-curl -X PUT "localhost:9200/test?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/test?pretty" -H 'Content-Type: application/json' -d'
 {
   "aliases": {
     "alias_1": {},
@@ -120,7 +120,7 @@ curl -X PUT "localhost:9200/test?pretty" -H 'Content-Type: application/json' -d'
 
 ```
 ## array 还是keyword比较好
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "terms": { "tags": ["abc", "7ec0e0e5-a4b0-46d7-af56-5b3eab477aea"] }},
    "sort": [
@@ -130,7 +130,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 '
 
 ## 这样，两个都会查出来，所以是 或查询
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { "terms": { "tags": ["abc", "7ec0e0e5-a4b0-46d7-af56-5b3eab477ae"] }},
    "sort": [
@@ -139,7 +139,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
  }
 '
 
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": { 
         "bool": {
@@ -156,7 +156,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 '
 
 
-curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
+curl "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap/_search?pretty" -H 'Content-Type: application/json' -d '
  {
    "query": {
        "term": {"tags": "7ec0e0e5-a4b0-46d7-af56-5b3eab477ae"}
@@ -171,7 +171,7 @@ curl "localhost:9200/testmap/_search?pretty" -H 'Content-Type: application/json'
 
 ## error
 ```
-curl -X PUT "localhost:9200/testmap?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap?pretty" -H 'Content-Type: application/json' -d'
 {
   "aliases": {
     "testaliais": {}
@@ -198,3 +198,36 @@ curl -X PUT "localhost:9200/testmap?pretty" -H 'Content-Type: application/json' 
 '
 
 ```
+
+
+## 中文分词
+
+"analyzer": "ik_smart"
+
+curl -X PUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/testmap?pretty" -H 'Content-Type: application/json' -d'
+{
+  "aliases": {
+    "testaliais": {}
+  },
+  "mappings": {
+    "properties": {
+      "id": {"type": "long"},
+      "name": { "type": "text", "analyzer": "ik_smart" },
+      "remart": {"type": "text"},
+      "age": {"type": "integer"},
+      "sort": {"type": "integer"},
+      "name2": {
+        "properties": {
+          "first": {
+            "type": "text"
+          },
+          "a": {
+              "type": "integer"
+          }
+        }
+      },
+      "tags": {"type": "keyword"}
+    }
+  }
+}
+'

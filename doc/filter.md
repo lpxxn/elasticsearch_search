@@ -34,7 +34,9 @@ curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: applicat
 curl "http://localhost:9200/my_test_3/_search?pretty" -H 'Content-Type: application/json' -d '
 {
     "query" : {
-        "bool" : {
+        "bool" : $$
+
+$${
             "filter" : {
                 "range" : {
                     "age" : { "gt" : 1 }

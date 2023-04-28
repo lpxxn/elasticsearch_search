@@ -78,7 +78,7 @@ curl -v -XPUT "http://localhost:9200/some_index?pretty" -H 'Content-Type: applic
 {
   "mappings": {
     "properties": {
-      "field_1": { "type" : "text" },
+      "field_1": { "type" : "text", "analyzer": "ik_smart" },
         "field_2": { "type" : "integer" },
         "field_3": { "type" : "boolean" },
       "created": {
