@@ -47,3 +47,28 @@ curl -XPUT "http://localhost:9200/my_test_3/?pretty" -H 'Content-Type: applicati
 resource_already_exists_exception
 
 详细可以查看 mapping.md
+
+
+```
+curl -X PUT --resolve "vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn:443:10.100.0.10"  "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/geo_location_sandbox4/_settings" -H 'Content-Type: application/json' -d '
+
+curl -XPUT "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/geo_location_sandbox4/_settings" -H 'Content-Type: application/json' -d '
+{
+  "settings": {
+    "index": {
+      "max_ngram_diff": 10
+    }
+  }
+}'
+
+curl -XPOST "https://vpc-cafe-cache-yax5i6n5md2r2blnct5ypdiyja.cn-northwest-1.es.amazonaws.com.cn/geo_location_sandbox4/_analyze?pretty" -H 'Content-Type: application/json' -d '
+{
+  "tokenizer": {
+    "type": "ngram",
+    "min_gram": 1,
+    "max_gram": 10,
+    "token_chars": []
+  },
+  "text": "北京大兴东边的东北菜馆15347658945"
+}'
+``

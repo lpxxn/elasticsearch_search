@@ -81,3 +81,11 @@ bluk一次最大处理多少数据量
 bulk会将要处理的数据载入内存中，所以数据量是有限的，最佳的数据两不是一个确定的数据，它取决于你的硬件，你的文档大小以及复杂性，你的索引以及搜索的负载。
 一般建议是1000-5000个文档，大小建议是5-15MB，默认不能超过100M，可以在es的配置文件（即$ES_HOME下的config下的elasticsearch.yml）中，bulk的线程池配置是内核数+1。
 
+
+
+```
+curl -X POST "localhost:9200/geo_location_sandbox4/_bulk?pretty" -H 'Content-Type: application/json' -d'
+{ "index" : { "_id" : "2-2" } }
+{"id":2,"kind":2,"snowflakeID":113220548128474149,"name":"外卖餐厅1","removed":false,"cityID":1,"areaID":0,"location":"0.000000,0.000000","address":"","cuisineType":"","cafeteriaID":-1}
+'
+```
